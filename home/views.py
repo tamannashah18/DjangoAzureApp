@@ -1,6 +1,34 @@
 from django.shortcuts import render
+from django.conf import settings
+from .forms import UploadFileForm
+from azure.storage.blob import BlobServiceClient
 
-# Create your views here.
-from django.http import HttpResponse
-def index(request):
-    return HttpResponse("Welcome to Azure Django App!")
+
+def upload_file(request):
+	"""Handle file upload and store in Azure Blob Storage.
+
+	Returns rendered template with the upload form and the blob URL when
+	upload succeeds.
+	"""
+	url = None
+
+	if request.method == 'POST':
+		form = UploadFileForm(request.POST, request.FILES)
+		if form.is_valid():
+			file = request.FILES['file']
+			blob_service_client = BlobServiceClient.from_connection_string(
+				settings.AZURE_STORAGE_CONNECTION_STRING
+			)
+			blob_client = blob_service_client.get_blob_client(
+				container=settings.AZURE_CONTAINER,
+				blob=file.name,
+			)
+			blob_client.upload_blob(file, overwrite=True)
+			url = (
+				f"https://{blob_service_client.account_name}.blob.core.windows.net/"
+				f"{settings.AZURE_CONTAINER}/{file.name}"
+			)
+	else:
+		form = UploadFileForm()
+
+	return render(request, 'home/upload.html', {'form': form, 'url': url})

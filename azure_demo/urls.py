@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path
-from home.views import index
+from home.views import upload_file
 
 urlpatterns = [
 path('admin/', admin.site.urls),
-path('', index),
+path('', upload_file),
 ]

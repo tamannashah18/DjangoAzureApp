@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-
+import os
+AZURE_STORAGE_CONNECTION_STRING =os.getenv('AZURE_STORAGE_CONNECTION_STRING','DefaultEndpointsProtocol=https;AccountName=azuredemodjango;AccountKey=K7pu8lo4ELIthECd3nKzJW4OdkYT0jjn04vmBSsRmnguu8oI6fmWQYgPYwAIwY0szFAAKy/UEDnV+AStjPkPvw==;EndpointSuffix=core.windows.net')
+AZURE_CONTAINER = 'uploads'
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +27,7 @@ SECRET_KEY = 'django-insecure-q-rze=m=$x+!k163bkstzx%rd$zq%g%6e7xah%q8xk#_9k)vqc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'djangoapp-cfe6bfb2hcbhefcj.westindia-01.azurewebsites.net','http://127.0.0.1/']
+ALLOWED_HOSTS = ['localhost', 'djangoapp-cfe6bfb2hcbhefcj.westindia-01.azurewebsites.net','127.0.0.1:8000']
 
 
 # Application definition
